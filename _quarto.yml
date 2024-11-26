@@ -13,8 +13,6 @@ book:
       chapters: 
         - "clean/date/clean-date.qmd"
 
-    - intro.qmd
-
 bibliography: references.bib
 
 format:

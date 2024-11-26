@@ -29,7 +29,7 @@ fmt_date_custom <- function(x) {
 }
 ```
 
-Example:
+**Example:**
 
 ```{r}
 fmt_date_custom("01/01/2020")
