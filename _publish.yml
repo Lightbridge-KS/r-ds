@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 51cdae0a-4307-488b-bca6-6f9b7159b788
+      url: https://r-ds-notes-lightbridge.netlify.app

@@ -1,5 +1,5 @@
 # Preface {.unnumbered}
 
 ::: {.callout-note appearance="default" collapse="false"}
-# My Note for R for Data Science
+My Note for R for Data Science
 :::
