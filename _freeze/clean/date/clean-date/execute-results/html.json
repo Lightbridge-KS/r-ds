@@ -1,0 +1,15 @@
+{
+  "hash": "1234a126befc60a399b3bd8234c5ef72",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: Clean Date\n---\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(lubridate)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n\nAttaching package: 'lubridate'\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nThe following objects are masked from 'package:base':\n\n    date, intersect, setdiff, union\n```\n\n\n:::\n:::\n\n\n\n\n\n## Format Date\n\nFormat date to `date` class.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfmt_date_custom <- function(x) {\n    out <- if (inherits(x, \"POSIXt\")) {\n        lubridate::as_date(x)\n    } else if (is.character(x)) {\n        dmy(x)\n    } else {\n        NA\n    }\n    out\n}\n```\n:::\n\n\n\n\nExample:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfmt_date_custom(\"01/01/2020\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"2020-01-01\"\n```\n\n\n:::\n\n```{.r .cell-code}\nfmt_date_custom(Sys.Date())\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] NA\n```\n\n\n:::\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

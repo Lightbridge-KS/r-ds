@@ -1,0 +1,28 @@
+project:
+  type: book
+
+book:
+  title: "R Data Science Note"
+  author: "Kittipos Sirivongrungson"
+  date: today
+  repo-url: https://github.com/Lightbridge-KS/r-ds
+  site-url: https://r-ds-notes-lightbridge.netlify.app
+  chapters:
+    - index.qmd
+    - part: "Clean Data"
+      chapters: 
+        - "clean/date/clean-date.qmd"
+
+    - intro.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc-depth: 4
+    code-fold: show
+
+
+execute: 
+  freeze: auto

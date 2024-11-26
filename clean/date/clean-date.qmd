@@ -1,0 +1,37 @@
+---
+title: Clean Date
+---
+
+```{r setup, include=FALSE}
+here::i_am("clean/date/clean-date.qmd")
+library(here)
+```
+
+```{r}
+library(lubridate)
+```
+
+
+## Format Date
+
+Format date to `date` class.
+
+```{r fmt_date_custom}
+fmt_date_custom <- function(x) {
+    out <- if (inherits(x, "POSIXt")) {
+        lubridate::as_date(x)
+    } else if (is.character(x)) {
+        dmy(x)
+    } else {
+        NA
+    }
+    out
+}
+```
+
+Example:
+
+```{r}
+fmt_date_custom("01/01/2020")
+fmt_date_custom(Sys.Date())
+```
