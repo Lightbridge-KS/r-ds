@@ -35,3 +35,58 @@ fmt_date_custom <- function(x) {
 fmt_date_custom("01/01/2020")
 fmt_date_custom(Sys.Date())
 ```
+
+## Time Interval
+
+### Using `time_length()`
+
+To convert a `difftime` object to **month** or **year intervals**, you can use the `lubridate` package, which provides functions like `time_length()` and `as.period()` for handling time intervals.
+
+```{r}
+library(lubridate)
+
+# Create difftime object
+start_date <- dmy("12/11/2001")
+end_date <- dmy("12/12/2003")
+time_diff <- end_date - start_date
+
+# Convert to months
+months_diff <- time_length(as.duration(time_diff), "months")
+
+# Convert to years
+years_diff <- time_length(as.duration(time_diff), "years")
+
+# Print the results
+print(paste("Months:", months_diff))
+print(paste("Years:", years_diff))
+```
+
+**Explanation:**
+
+1. **`time_length()`**:
+   - Converts a `duration` object into the specified unit (e.g., months, years).
+   
+2. **`as.duration(time_diff)`**:
+   - Converts the `difftime` object into a `duration` object, which is required by `time_length()`.
+
+3. **Units**:
+   - `"months"`: Converts the interval into months, assuming an average month length of ~30.44 days.
+   - `"years"`: Converts the interval into years, assuming 365.25 days per year.
+
+
+### Using `interval()` 
+
+
+If you need to calculate **exact calendar intervals** (e.g., the number of full months or years between two dates), use `interval` and `int_length`:
+
+```{r}
+# Exact calendar months
+months_diff_exact <- interval(start_date, end_date) %/% months(1)
+
+# Exact calendar years
+years_diff_exact <- interval(start_date, end_date) %/% years(1)
+
+# Print the results
+print(paste("Exact months:", months_diff_exact))
+print(paste("Exact years:", years_diff_exact))
+```
