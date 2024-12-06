@@ -8,6 +8,48 @@ here::i_am("stat/prop-compare.qmd")
 library(here)
 ```
 
+```{r}
+library(ggplot2)
+```
+
+
+## chi-square goodness of fit test
+
+```{r}
+# load iris dataset
+dat <- iris
+
+# create size variable
+dat$size <- ifelse(dat$Sepal.Length < median(dat$Sepal.Length),
+  "small", "big"
+)
+
+# show first 5 observations
+head(dat, n = 5)
+```
+
+
+### Plot
+
+```{r}
+ggplot(dat) +
+  aes(x = Species) +
+  geom_bar(fill = "#0c4c8a") +
+  theme_minimal()
+```
+
+
+```{r}
+# chi-square goodness of fit test
+test <- chisq.test(table(dat$Species), # observed proportions
+  p = c(1 / 3, 1 / 3, 1 / 3) # expected proportions
+)
+
+test
+```
+
+
+
 ## Chi-square test vs Fisher's exact test
 
 **Usual rule:** Chi-square test is not appropriate when the expected values in one of the cells of the contingency table is **less than 5**, and in this case the Fisher’s exact test is preferred 
@@ -41,6 +83,7 @@ mosaicplot(dat,
   color = TRUE
 )
 ```
+
 ### Expected frequencies
 
 Fisher’s exact test is used when there is at least one cell in the contingency table of the expected frequencies below 5.
