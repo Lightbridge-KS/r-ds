@@ -1,0 +1,42 @@
+---
+title: "Summary Stats"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+here::i_am("summary/gtsum-sum.qmd")
+library(here)
+
+```
+
+
+```{r message=FALSE}
+library(gtsummary)
+```
+
+
+```{r}
+head(trial)
+```
+
+```{r}
+trial2 <- trial |> select(trt, age, grade)
+```
+
+
+## Basic Summary
+
+```{r}
+trial2 |>
+  tbl_summary(
+    by = trt,
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} ({p}%)"
+    ),
+    digits = all_continuous() ~ 2,
+    label = grade ~ "Tumor Grade"
+  ) %>% 
+  bold_labels()
+```
+

@@ -1,0 +1,17 @@
+{
+  "hash": "f7cb3e83b571b5266f9ce53dad911984",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Compare: Two Proprotion\"\n---\n\n\n\n\n\n\n## Chi-square test vs Fisher's exact test\n\n**Usual rule:** Chi-square test is not appropriate when the expected values in one of the cells of the contingency table is **less than 5**, and in this case the Fisher’s exact test is preferred \n\n\n## Fisher's exact test\n\n- [Statsandr Fisher's exact test](https://statsandr.com/blog/fisher-s-exact-test-in-r-independence-test-for-a-small-sample/)\n\nthe Fisher’s exact test is used when the sample is small (and in this case the \np-value is exact and is not an approximation).\n\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndat <- data.frame(\n  \"smoke_no\" = c(7, 0),\n  \"smoke_yes\" = c(2, 5),\n  row.names = c(\"Athlete\", \"Non-athlete\"),\n  stringsAsFactors = FALSE\n)\ncolnames(dat) <- c(\"Non-smoker\", \"Smoker\")\n\ndat\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n            Non-smoker Smoker\nAthlete              7      2\nNon-athlete          0      5\n```\n\n\n:::\n:::\n\n\n\n\n### Mosaic Plot\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmosaicplot(dat,\n  main = \"Mosaic plot\",\n  color = TRUE\n)\n```\n\n::: {.cell-output-display}\n![](prop-compare_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\n\n### Expected frequencies\n\nFisher’s exact test is used when there is at least one cell in the contingency table of the expected frequencies below 5.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nchisq.test(dat)$expected\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nWarning in chisq.test(dat): Chi-squared approximation may be incorrect\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stdout}\n\n```\n            Non-smoker Smoker\nAthlete            4.5    4.5\nNon-athlete        2.5    2.5\n```\n\n\n:::\n:::\n\n\n\n\n### Perform\n\n#### For Contingency Table\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndat\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n            Non-smoker Smoker\nAthlete              7      2\nNon-athlete          0      5\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ntest <- fisher.test(dat)\ntest\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n\n\tFisher's Exact Test for Count Data\n\ndata:  dat\np-value = 0.02098\nalternative hypothesis: true odds ratio is not equal to 1\n95 percent confidence interval:\n 1.449481      Inf\nsample estimates:\nodds ratio \n       Inf \n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nrstatix::fisher_test(dat, detailed = TRUE)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 1 × 8\n      n estimate     p conf.low conf.high method            alternative p.signif\n* <dbl>    <dbl> <dbl>    <dbl>     <dbl> <chr>             <chr>       <chr>   \n1    14      Inf 0.021     1.45       Inf Fisher's Exact t… two.sided   *       \n```\n\n\n:::\n:::\n\n\n\n\n\n#### Long Format\n\n```r\nfisher.test(table(dat$variable1, dat$variable2))\n```\n\n",
+    "supporting": [
+      "prop-compare_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

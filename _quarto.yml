@@ -10,8 +10,14 @@ book:
   chapters:
     - index.qmd
     - part: "Clean Data"
-      chapters: 
+      chapters:
         - "clean/date/clean-date.qmd"
+    - part: "Summary"
+      chapters:
+        - "summary/gtsum-sum.qmd"
+    - part: "Statistic"
+      chapters:
+        - "stat/prop-compare.qmd"
 
 bibliography: references.bib
 
@@ -22,5 +28,5 @@ format:
     code-fold: show
 
 
-execute: 
+execute:
   freeze: auto
