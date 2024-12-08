@@ -29,15 +29,6 @@ head(dat, n = 5)
 ```
 
 
-### Plot
-
-```{r}
-ggplot(dat) +
-  aes(x = Species) +
-  geom_bar(fill = "#0c4c8a") +
-  theme_minimal()
-```
-
 
 ```{r}
 # chi-square goodness of fit test

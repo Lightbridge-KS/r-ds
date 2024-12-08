@@ -1,0 +1,60 @@
+---
+title: Cross Tabulation
+---
+
+Creating contingency tables (cross-tabulations) in R can be done using base R as well as functions from various R packages like `dplyr`, `tidyr`, `janitor`, and `gmodels`. Here's an overview:
+
+
+### Base R: `table()`
+
+The simplest way to create a contingency table is using `table()` in base R.
+
+```{r}
+# Example data
+data <- data.frame(
+  Gender = c("Male", "Female", "Female", "Male", "Female"),
+  Preference = c("A", "B", "A", "B", "A")
+)
+
+# Create a contingency table
+table(data$Gender, data$Preference)
+```
+
+
+### `dplyr` with `count()`
+
+You can use the `dplyr` package to count combinations of two variables.
+
+```{r}
+library(dplyr)
+
+data %>%
+  count(Gender, Preference)
+```
+
+
+
+### tidyr` with `pivot_wider()`
+
+You can create a contingency table using `pivot_wider()` in `tidyr`.
+
+```{r}
+library(tidyr)
+
+data %>%
+  count(Gender, Preference) %>%
+  pivot_wider(names_from = Preference, values_from = n, values_fill = 0)
+```
+
+
+
+### `janitor` with `tabyl()`
+
+The `janitor` package provides the `tabyl()` function for quick and clean contingency tables.
+
+```{r}
+library(janitor)
+
+data %>%
+  tabyl(Gender, Preference)
+```

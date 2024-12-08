@@ -1,0 +1,15 @@
+{
+  "hash": "90e928094b2d6cb25aeed11dfea22391",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: Cross Tabulation\n---\n\n\n\n\nCreating contingency tables (cross-tabulations) in R can be done using base R as well as functions from various R packages like `dplyr`, `tidyr`, `janitor`, and `gmodels`. Here's an overview:\n\n\n### Base R: `table()`\n\nThe simplest way to create a contingency table is using `table()` in base R.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Example data\ndata <- data.frame(\n  Gender = c(\"Male\", \"Female\", \"Female\", \"Male\", \"Female\"),\n  Preference = c(\"A\", \"B\", \"A\", \"B\", \"A\")\n)\n\n# Create a contingency table\ntable(data$Gender, data$Preference)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n        \n         A B\n  Female 2 1\n  Male   1 1\n```\n\n\n:::\n:::\n\n\n\n\n\n### `dplyr` with `count()`\n\nYou can use the `dplyr` package to count combinations of two variables.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n\nAttaching package: 'dplyr'\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n```\n\n\n:::\n\n```{.r .cell-code}\ndata %>%\n  count(Gender, Preference)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n  Gender Preference n\n1 Female          A 2\n2 Female          B 1\n3   Male          A 1\n4   Male          B 1\n```\n\n\n:::\n:::\n\n\n\n\n\n\n### tidyr` with `pivot_wider()`\n\nYou can create a contingency table using `pivot_wider()` in `tidyr`.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyr)\n\ndata %>%\n  count(Gender, Preference) %>%\n  pivot_wider(names_from = Preference, values_from = n, values_fill = 0)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n# A tibble: 2 × 3\n  Gender     A     B\n  <chr>  <int> <int>\n1 Female     2     1\n2 Male       1     1\n```\n\n\n:::\n:::\n\n\n\n\n\n\n### `janitor` with `tabyl()`\n\nThe `janitor` package provides the `tabyl()` function for quick and clean contingency tables.\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(janitor)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n\nAttaching package: 'janitor'\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n```\n\n\n:::\n\n```{.r .cell-code}\ndata %>%\n  tabyl(Gender, Preference)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n Gender A B\n Female 2 1\n   Male 1 1\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
