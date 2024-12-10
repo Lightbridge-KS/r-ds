@@ -19,6 +19,9 @@ book:
     - part: "Statistic"
       chapters:
         - "stat/prop-compare.qmd"
+        - "stat/lm-mixed.qmd"
+        - "stat/lm-mixed-2.qmd"
+
 
 bibliography: references.bib
 

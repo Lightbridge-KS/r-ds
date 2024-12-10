@@ -1,0 +1,96 @@
+---
+title: "LME 2"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+here::i_am("stat/lm-mixed-2.qmd")
+library(here)
+library(tidyverse)
+theme_set(theme_minimal())
+```
+
+
+- Tutorial: [TileStats: Linear mixed effects models - random slopes and interactions | R and SPSS](https://youtu.be/oI1_SV1Rpfc?si=O6cJRgUl01IZ1Ks4)
+
+
+```{r diet_df}
+diet_df <- data.frame(
+  person = c("Person 1", "Person 2", "Person 3", "Person 4"),
+  diet = c("A", "A", "B", "B"),
+  wt_before = c(102L, 96L, 83L, 79L),
+  wt_1wk = c(97L, 93L, 79L, 77L),
+  wt_2wk = c(95L, 87L, 78L, 75L),
+  wt_3wk = c(93L, 85L, 74L, 72L)
+)
+diet_df
+```
+
+```{r}
+diet_df_long <- diet_df %>% 
+  pivot_longer(cols = starts_with("wt"), 
+               names_to = "time", names_prefix = "wt_", values_to = "weight") %>% 
+  mutate(time = factor(time, levels = c("before", paste0(1:3, "wk")))) %>% 
+  mutate(time = case_when(time == "before" ~ 0,
+                          time == "1wk" ~ 1,
+                          time == "2wk" ~ 2,
+                          time == "3wk" ~ 3,
+                          ))
+
+```
+
+
+## Multiple Linear Reg
+
+```{r}
+diet_df_long %>% 
+  ggplot(aes(time, weight, colour = diet)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm")
+```
+
+```{r}
+lm(weight ~ time + diet, data = diet_df_long) %>% summary()
+```
+
+## Mixed Effect
+
+- Random effect should have **≥ 5 levels**
+
+```{r}
+library(lme4)
+```
+
+### Random Intercept
+
+(Plot is approximation)
+
+```{r}
+diet_df_long %>% 
+  ggplot(aes(time, weight, colour = diet)) +
+  geom_point(size = 3) +
+  geom_line(aes(group = person))
+```
+
+```{r}
+diet_m4 <- lmer(weight ~ time + (1 | person), data = diet_df_long, REML = F)
+summary(diet_m4)
+```
+
+**Intercept:**
+
+```{r}
+ranef(diet_m4)
+```
+
+
+```{r}
+lmer(weight ~ time + (1 | person), data = diet_df_long) %>% broom.mixed::tidy()
+```
+
+### Random Intercept & Slope
+
+```{r}
+diet_m4_2 <- lmer(weight ~ time + (1 + time | person), data = diet_df_long, REML = F)
+summary(diet_m4_2)
+```

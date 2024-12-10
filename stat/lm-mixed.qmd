@@ -1,0 +1,109 @@
+---
+title: "LME (Basic)"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+here::i_am("stat/lm-mixed.qmd")
+library(here)
+library(tidyverse)
+```
+
+
+A **linear mixed-effects model (LME)** is a statistical model used to analyze data that have hierarchical or grouped structure. It combines two types of effects:
+
+1. **Fixed effects**: Represent relationships or effects that are constant across the entire population or dataset (e.g., the overall impact of a treatment or predictor variable).
+2. **Random effects**: Represent variability or random deviations associated with groups, clusters, or subjects in the data (e.g., individual-level variability).
+
+### Key Concepts
+
+1. **Fixed effects**: These are the parameters of primary interest, such as the slope and intercept in a regression model.
+2. **Random effects**: Capture the variation within clusters or groups that is not explained by the fixed effects.
+3. **Hierarchical/nested data**: LMEs are particularly useful when data are organized into groups, such as measurements repeated within subjects, or students nested within schools.
+4. **Correlation structure**: LMEs can model the correlation between observations within the same group due to shared random effects.
+
+### General Form
+
+The model can be expressed as:
+
+$$
+y_{ij} = \beta_0 + \beta_1 x_{ij} + u_{j} + \epsilon_{ij}
+$$
+
+Where:
+
+- $y_{ij}$: Outcome variable for observation $i$ in group $j$.
+- $\beta_0, \beta_1$: Fixed effects (e.g., intercept and slope).
+- $x_{ij}$: Predictor variable for observation $i$ in group $j$.
+- $u_j$: Random effect for group $j$, usually assumed to follow $N(0, \sigma_u^2)$.
+- $\epsilon_{ij}$: Residual error, assumed to follow $N(0, \sigma^2)$.
+
+### Example Scenario
+
+#### Research Question:
+
+Does a new teaching method improve test scores, accounting for variability among students and schools?
+
+- **Fixed effect**: The impact of the teaching method on test scores.
+- **Random effect**: Variability in test scores due to differences between schools.
+
+#### Data Structure:
+
+- $y_{ij}$: Test scores of student $i$ in school $j$.
+- $x_{ij}$: Teaching method indicator (1 = new method, 0 = old method).
+- $u_j$: Random intercept for each school (accounts for baseline differences between schools).
+
+#### R Example
+
+```{R}
+# Load package
+library(lme4)
+
+# Simulated data
+set.seed(123)
+school <- factor(rep(1:10, each = 10)) # 10 schools, 10 students each
+method <- rbinom(100, 1, 0.5) # Random teaching method assignment
+test_score <- 50 + 5 * method + rnorm(10)[school] + rnorm(100) # Test scores
+
+school_score_df <- data.frame(school, method, test_score)
+head(school_score_df)
+```
+```{r}
+school_score_df %>% 
+  mutate(method = factor(method)) %>% 
+  ggplot(aes(method, test_score, color = school)) +
+  geom_point() +
+  geom_line(aes(group = school))
+```
+
+
+
+```{r}
+# Fit LME model
+model <- lmer(test_score ~ method + (1 | school), data = school_score_df)
+
+# Summary
+summary(model)
+```
+
+
+
+### Interpretation of R Output
+
+1. **Fixed effect for `method`**: Estimated change in test scores when using the new teaching method compared to the old method.
+2. **Random intercept for `school`**: Variability in baseline test scores across schools.
+3. **Residual variance**: Within-school variation in test scores not explained by the method or school-level effects.
+
+### Summary
+
+**Advantages of LME:**
+
+- Handles hierarchical data effectively.
+- Accounts for intra-group correlation.
+- More flexible than standard regression models.
+
+**Applications:**
+
+- Repeated measures data (e.g., patient follow-ups in clinical studies).
+- Multi-level education data (e.g., students within classrooms).
+- Longitudinal studies (e.g., growth trends over time).
